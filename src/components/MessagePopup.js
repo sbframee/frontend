@@ -1,0 +1,52 @@
+import React from "react";
+
+const MessagePopup = ({ onClose, message, onSave, button1, button2 }) => {
+  return (
+    <div className="overlay" style={{position:"fixed",top:0,left:0,zIndex:9999999}}>
+      <div
+        className="modal"
+        style={{ height: "fit-content", width: "fit-content" }}
+      >
+        <div
+          className="content"
+          style={{
+            height: "fit-content",
+            padding: "20px",
+            width: "fit-content",
+          }}
+        >
+          <div style={{ overflowY: "scroll" }}>
+            <form
+              className="form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                onClose();
+              }}
+            >
+              <div className="formGroup">
+                <div className="row">
+                  <h1 style={{ textAlign: "center" }}>{message}</h1>
+                </div>
+
+                <div className="row">
+                  {button2 ? (
+                    <button className="simple_Logout_button" type="button"  onClick={onSave}>
+                      {button2}
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                  <button className="simple_Logout_button" type="submit" >
+                    {button1}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MessagePopup;

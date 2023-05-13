@@ -1,0 +1,124 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  max-width: 450px;
+  margin: 0 auto;
+  position: relative;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+*{
+  -ms-overflow-style: none;
+  }
+  ::-webkit-scrollbar {
+  display: none;
+  }
+
+#console {
+  position: fixed;
+  bottom: 0px;
+  height: 380px;
+  background: black;
+  width: 100%;
+  color: white;
+  font-size: 15px;
+  overflow: auto;
+  border-bottom: 10px solid grey;
+}
+
+#console>* {
+  border-bottom: 1px solid grey;
+  padding: 5px;
+}
+.clear_Logout_button, .simple_Logout_button{
+  border: none;
+  color: #fff;
+  background: #44cd4a;
+  width: 200px;
+  padding: 10px 0px;
+  margin: 10px 20px;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  letter-spacing: 1px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 3px 4px 3px black;
+  transition: all 0.3s ease-in-out;
+}
+.clear_Logout_button:hover, .simple_Logout_button:hover{
+  transform: scale(1.05);
+}
+.react-datepicker__day.react-datepicker__day--keyboard-selected {
+  background: none;
+  color: black;
+}
+
+.react-datepicker__day.react-datepicker__day--today {
+  font-weight: 800;
+}
+.date-field.from.orders-page>.react-datepicker__tab-loop>.react-datepicker-popper {
+  position: absolute !important;
+  inset: 0px auto auto 0px !important;
+  transform: translate(82.5px, 115.5px) !important;
+}
+
+.date-field.to.orders-page>.react-datepicker__tab-loop>.react-datepicker-popper {
+  position: absolute !important;
+  inset: 0px auto auto 0px !important;
+  transform: translate(316.5px, 115.5px) !important;
+}
+.edit-order.date-picker-container>.react-datepicker__tab-loop>.react-datepicker-popper {
+  /* transform: translate(550px, 119.5px) !important; */
+  transform: translate(0, 0) !important;
+  z-index: 1110 !important;
+  position: absolute;
+  right: auto !important;
+  margin: 125px 0px 0px -250px;
+  inset: inherit !important;
+}
+
+.edit-order.date-picker-container>.react-datepicker__tab-loop>.react-datepicker-popper>div>.react-datepicker>.react-datepicker__triangle {
+  left: -46% !important;
+}
+.login_date_picker .react-datepicker-popper {
+  position: relative !important;
+  transform: inherit !important;
+}
+
+.newCategory .react-datepicker-popper {
+  z-index: 100000 !important;
+}
+
+.secondary_screen .react-datepicker-wrapper,
+.secondary_screen .react-datepicker__input-container,
+.secondary_screen .react-datepicker__input-container input {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.itemavilabelitycontainer .react-datepicker-wrapper,
+.itemavilabelitycontainer .react-datepicker__input-container,
+.itemavilabelitycontainer .react-datepicker__input-container input {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+.itemavilabelitycontainer .react-datepicker-popper {
+  z-index: 10000 !important;
+}
+#customer-details-dropdown.page1 {
+  right: 100px;
+  top: 50px;
+}
