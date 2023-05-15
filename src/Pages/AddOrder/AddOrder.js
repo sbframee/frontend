@@ -14,7 +14,7 @@ export default function AddOrder() {
   const [state, setState] = useState('');
   const [cities, setCities] = useState([]);
   const [city, setCity] = useState('');
-  
+    
   useEffect(() => {
     axios.get('http://localhost:5000/country/getCountries')
       .then(response => setCountries(response.data))
@@ -42,14 +42,20 @@ export default function AddOrder() {
   const onCityChange = event => {
     setCity(event.target.value);
   };
+
  
   const onSubmit = (e) => {
     e.preventDefault();
     const newUser = { name, mobileno, 
       country: country,
       state: state,
-      city: city};
+      city: city,
+      };
       if(mobileno.length < 10) {
+        alert("Mobile number shoild be at least 10 digits ")
+        return;
+      }
+      else if(mobileno.length > 10) {
         alert("Mobile number shoild be at least 10 digits ")
         return;
       }
@@ -129,7 +135,7 @@ export default function AddOrder() {
                 )}
                         
                         </div>
-                     
+                       
               <div className="bottomContent" style={{ padding: "20px" }}>
                 <button type="button" onClick={onSubmit}>
                   Save

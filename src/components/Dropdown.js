@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import NavLink from "./Navlink";
 import { Link } from 'react-router-dom';
 
 import { useNavigate } from "react-router-dom";

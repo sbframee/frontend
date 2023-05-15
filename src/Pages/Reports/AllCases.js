@@ -6,9 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import Header from "../../components/Header";
 import { v4 as uuid } from "uuid";
-import Sidebar from "../../components/Sidebar";
 import DatePicker from "react-datepicker";
 import * as FileSaver from "file-saver";
 import { useReactToPrint } from "react-to-print";
