@@ -1,97 +1,108 @@
-//@flow
-
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
+import AddCustomerPopup from "./AddCustomerPopup"
 import './style.css';
+import axios from "axios";
 
-const StyledChatScreenFooter = styled.footer`
-  background: #ece5dd;
-  position: fixed;
-  bottom: 0;
-  height: 50px;
-  width: 100%;
-  max-width: 450px;
-  padding: 5px;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  justify-content: flex-start;
-  
-  .input-addon {
-    height: 40px;
-    text-align: center;
-    width: 100%;
-  
-  }
-
-  input {
-    flex: 1 1 auto;
-    min-width: 0;
-    appearance:none
-    height: 40px;
-    border: 0px;
-    background-color: #fff;
-    font-size: 1em;
-  }
-`;
-
-
-type Props = {
-  addMessage: Function
+let initials = {
+  case_uuid: "",
+  customer_uuid: "",
+  article_uuid: "",
+  agent_uuid: "",
+  firm_uuid: localStorage.getItem("firm_uuid"),
+  created_by: localStorage.getItem("user_uuid"),
+  disbursal_date: "",
+  // emi_date: "",
+  interest: "",
+  loan_amt: "",
+  disbursal_status: 0,
+  first_installment_date: "",
+  number_of_installment: "",
+  down_payment: "",
+  stage: "",
+  case_number: "",
+  current_stage: 0,
+  article_category: "",
+  article_category_uuid: "",
+  article_sub_category: "",
+  guarantor_uuid: "",
+  dealer_uuid: "",
 };
 
-type State = {
-  formValue: string
-};
 
-class ChatScreenFooter extends Component<Props, State> {
-  state = {
-    formValue: ""
+export default function ChatScreenFooter() {
+  const [order, setOrder] = useState(initials);
+  const [newCustomerForm, setNewCustomerForm] = useState(false);
+  const [customersData, setCustomersData] = useState([]);
+
+  const getItemsData = async () => {
+    const response = await axios({
+      method: "get",
+      url: "/customers/GetCustomersList",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+    if (response.data.success) setCustomersData(response.data.result);
   };
+  useEffect(() => {
+    getItemsData();
+  }, []);
 
-  handleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ formValue: event.target.value });
-  };
-
-  handleSubmit = (event: Event) => {
-    event.preventDefault();
-    this.props.addMessage(this.state.formValue);
-    this.setState({ formValue: "" });
-  };
-
-  addEmoji = () => {
-    this.setState({ formValue: "😎" });
-  };
-
-  render() {
+  const customersOptions = useMemo(
+    () =>
+      customersData.map((a) => ({
+        value: a.customer_uuid,
+        label:
+          a?.customer_firstname +
+          " " +
+          a?.customer_middlename +
+          " " +
+          a?.customer_lastname +
+          (a?.mobile.length
+            ? ", " +
+              a?.mobile.map((a, i) => (i === 0 ? a.number : ", " + a.number))
+            : ""),
+      })),
+    [customersData]
+  );
+ 
     return (
-      <StyledChatScreenFooter>
-        <StyledForm onSubmit={this.handleSubmit}>
-          <span className="input-addon" >
-            <Link to='/admin/cases' style={{ textDecoration: 'none', color: 'black' }}>All Cases</Link>
-          </span>
-          <span className="input-addon">
-            <Link to='/admin/upcomingEmiM' style={{ textDecoration: 'none', color: 'black' }}>Upcoming EMI</Link>
-          </span>
+        <>  
           <span className="input-addon">
 
           </span>
           <span className="golden-btn">
-          <Link to='/admin/addCaseM' style={{ textDecoration: 'none',  color: 'rgb(120,50,5)' }} > <i className="fa fa-plus in-float"></i></Link>
+          <Link style={{ textDecoration: 'none',  color: 'rgb(120,50,5)' }} > <i className="fa fa-plus in-float" onClick={() => setNewCustomerForm("Customer")}></i></Link>
           </span>
-          <span className="input-addon">
-            <Link to='/admin/allPaymentsM' style={{ textDecoration: 'none', color: 'black' }}>All Payments</Link>
-          </span>
-          <span className="input-addon">
-            <Link to='/admin/allCustomersM' style={{ textDecoration: 'none', color: 'black' }}>All Customers</Link>
-          </span>
-
-        </StyledForm>
-      </StyledChatScreenFooter>
+          {newCustomerForm ? (
+      <AddCustomerPopup
+        onSave={(data, condition) => {
+          console.log(data);
+          if (newCustomerForm === "Customer")
+            setOrder((prev) => ({
+              ...prev,
+              customer_uuid: data?.customer_uuid,
+            }));
+          else
+            setOrder((prev) => ({
+              ...prev,
+              guarantor_uuid: data?.customer_uuid,
+            }));
+          getItemsData();
+          setNewCustomerForm(false);
+        }}
+        // popupInfo={popupForm}
+        name={newCustomerForm}
+      />
+    ) : (
+      ""
+    )}
+  
+       </>
+       
     );
-  }
 }
-
-export default ChatScreenFooter;
+   

@@ -14,6 +14,8 @@ export default function AddOrder() {
   const [state, setState] = useState('');
   const [cities, setCities] = useState([]);
   const [city, setCity] = useState('');
+  const [image, setImage] = useState(null);
+
     
   useEffect(() => {
     axios.get('http://localhost:5000/country/getCountries')
@@ -43,14 +45,21 @@ export default function AddOrder() {
     setCity(event.target.value);
   };
 
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
  
   const onSubmit = (e) => {
     e.preventDefault();
-    const newUser = { name, mobileno, 
-      country: country,
-      state: state,
-      city: city,
-      };
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('mobileno', mobileno);
+    formData.append('country', country);
+    formData.append('state', state);
+    formData.append('city', city);
+    formData.append('image', image);
+
       if(mobileno.length < 10) {
         alert("Mobile number shoild be at least 10 digits ")
         return;
@@ -59,7 +68,7 @@ export default function AddOrder() {
         alert("Mobile number shoild be at least 10 digits ")
         return;
       }
-    axios.post("/cases/postCase", newUser).then((response) => {
+    axios.post("http://localhost:5000/cases/postCase", formData).then((response) => {
       console.log(response.data);
     });
   };
@@ -136,6 +145,13 @@ export default function AddOrder() {
                         
                         </div>
                        
+                        <div>
+                <label className="selectLabel">
+                  Image:
+                   <input type="file" accept="image/*" onChange={handleImageChange} />
+                </label>
+              </div>
+              
               <div className="bottomContent" style={{ padding: "20px" }}>
                 <button type="button" onClick={onSubmit}>
                   Save

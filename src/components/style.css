@@ -495,8 +495,8 @@ div.unsync-count-container {
     position:fixed;
       width:65px;
       height:65px;
-      bottom:20px;
-      right:47%;
+      bottom:40px;
+      right:40%;
       text-align:center;
     font-size:30px;
     z-index: 1;

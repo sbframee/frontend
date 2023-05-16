@@ -11,7 +11,7 @@ import AgentsPage from "./Pages/Master/AgentsPage";
 import ArticalsPage from "./Pages/Master/ArticalsPages";
 import UsersPage from "./Pages/Master/UsersPage";
 import LoginPage from "./LoginPage";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import CustomerPage from "./Pages/Master/CustomersPage";
 import AddOrder from "./Pages/AddOrder/AddOrder";
 import AllCases from "./Pages/Reports/AllCases";
@@ -24,32 +24,10 @@ import DealerPage from "./Pages/Master/Dealer";
 
 function App() {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
-  //axios.defaults.baseURL = "http://3.7.152.69:9000/";
+  //axios.defaults.baseURL = "http://13.233.186.88:5000/";
   axios.defaults.baseURL = "http://localhost:5000";
 
-  const getUserType = async () => {
-    let user_uuid = localStorage.getItem("user_uuid");
-    if (user_uuid) {
-      const response = await axios({
-        method: "get",
-        url: "users/GetUser/" + user_uuid,
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response.data.result.user_type);
-      if (response.data.success)
-        setUserType(response.data.result.user_type || false);
-      sessionStorage.setItem("userType", response.data.result.user_type);
-    }
-  };
-  useEffect(() => {
-    document.title = localStorage.getItem("firm_title") || "Firm";
-    if (userType === "1") return;
-    getUserType();
-  }, [userType]);
-  console.log(userType);
+  
   return (
     <div className="App">
       <Router>

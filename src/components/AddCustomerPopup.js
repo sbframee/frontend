@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { v4 as uuid } from "uuid";
 import { Add } from "@mui/icons-material";
 import axios from 'axios';
+
 const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
         const [data, setdata] = useState({});
       
@@ -64,17 +65,9 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
           <div className="overlay">
             <div
               className="modal"
-              style={{ height: "fit-content", width: "fit-content", padding: "20px" }}
+              style={{ alignItems: "center" }}
             >
-              <div
-                className="content"
-                style={{
-                  height: "fit-content",
-                  padding: "20px",
-                  width: "fit-content",
-                }}
-              >
-                <div style={{ overflowY: "scroll" }}>
+             
                   <form className="form" onSubmit={submitHandler}>
                     <div className="row">
                       <h1>{popupInfo?.type === "edit" ? "Edit" : "Add"} {name}</h1>
@@ -276,9 +269,7 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
                   x
                 </button>
               </div>
-            </div>
-          </div>
-        );
+                    );
       
       
 }

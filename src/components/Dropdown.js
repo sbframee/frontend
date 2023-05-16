@@ -48,20 +48,13 @@ const Dropdown = ({ dropdownIsVisible, toggleDropdown }) => {
 
 
       <i className="fa fa-close" onClick={toggleDropdown} style={{ cursor: 'pointer' }}></i>
-      <Link to='/admin/agentM' ><h4>Agents</h4></Link>
-      <Link to='/admin/articalM' ><h4>Articles</h4></Link>
-      <Link to='/admin/usersM' ><h4>Users</h4></Link>
-      <Link to='/admin/chargesM' ><h4>Charges</h4></Link>
-      <Link to='/admin/dealerM' ><h4>Dealers</h4></Link>
-      <Link to='/admin/formsM' ><h4>Forms</h4></Link>
-      
-
-<div> Agents</div>
-
-
+      <Link to='/admin/cases' ><h4>All Cases</h4></Link>
+      <Link to='/admin/upcomingEmi' ><h4>Upcoming Emi</h4></Link>
+      <Link to='/admin/allPayments' ><h4>All Payments</h4></Link>
+      <Link to='/admin/allCustomers' ><h4>All Customers</h4></Link>
 
       <div
-
+        
         onClick={() => {
           setLogoutPopup(true);
         }}
