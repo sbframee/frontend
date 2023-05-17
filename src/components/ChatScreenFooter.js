@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import AddCustomerPopup from "./AddCustomerPopup"
+import AddCasePopup from "./AddCasePopup"
 import './style.css';
 import axios from "axios";
 
@@ -32,7 +32,7 @@ let initials = {
 
 export default function ChatScreenFooter() {
   const [order, setOrder] = useState(initials);
-  const [newCustomerForm, setNewCustomerForm] = useState(false);
+  const [newCaseForm, setNewCaseForm] = useState(false);
   const [customersData, setCustomersData] = useState([]);
 
   const getItemsData = async () => {
@@ -75,13 +75,13 @@ export default function ChatScreenFooter() {
 
           </span>
           <span className="golden-btn">
-          <Link style={{ textDecoration: 'none',  color: 'rgb(120,50,5)' }} > <i className="fa fa-plus in-float" onClick={() => setNewCustomerForm("Customer")}></i></Link>
+          <Link style={{ textDecoration: 'none',  color: 'rgb(120,50,5)' }} > <i className="fa fa-plus in-float" onClick={() => setNewCaseForm("Case")}></i></Link>
           </span>
-          {newCustomerForm ? (
-      <AddCustomerPopup
+          {newCaseForm ? (
+      <AddCasePopup
         onSave={(data, condition) => {
           console.log(data);
-          if (newCustomerForm === "Customer")
+          if (newCaseForm === "Case")
             setOrder((prev) => ({
               ...prev,
               customer_uuid: data?.customer_uuid,
@@ -92,10 +92,10 @@ export default function ChatScreenFooter() {
               guarantor_uuid: data?.customer_uuid,
             }));
           getItemsData();
-          setNewCustomerForm(false);
+          setNewCaseForm(false);
         }}
         // popupInfo={popupForm}
-        name={newCustomerForm}
+        name={newCaseForm}
       />
     ) : (
       ""

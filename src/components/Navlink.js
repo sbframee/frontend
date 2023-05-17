@@ -54,37 +54,38 @@ const Navlink = ({ changeViewState, viewState }: Props) => {
   return (
     <StyledHeaderNav>
       <StyledNavItem
-        data-nav="General"
+        data-nav=" NewOrder"
         onClick={changeViewState}
         viewState={viewState}
-        current="General"
+        current=" NewOrder"
       >
-       General
+       NewOrder
       </StyledNavItem>
       <StyledNavItem
-        data-nav="Products"
+        data-nav="Design"
         onClick={changeViewState}
         viewState={viewState}
-        current="Products"
+        current="Design"
       >
-        Products
+        Design
       </StyledNavItem>
       <StyledNavItem
-        data-nav="Pricing"
+        data-nav="PrintSK"
         onClick={changeViewState}
         viewState={viewState}
-        current="Pricing"
+        current="PrintSK"
       >
-       Pricing
+       PrintSK
       </StyledNavItem>
       <StyledNavItem
-        data-nav="Contact"
+        data-nav="PrintOther"
         onClick={changeViewState}
         viewState={viewState}
-        current="Contact"
+        current="PrintOther"
       >
-      Contact
+      PrintOther
       </StyledNavItem>
+     
     </StyledHeaderNav>
   );
 };

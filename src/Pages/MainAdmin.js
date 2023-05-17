@@ -2,7 +2,6 @@ import React from "react";
 import Header from "../components/Header";
 import ChatScreenFooter from "../components/ChatScreenFooter";
 import Navlink from "../components/Navlink";
-import MobileHome from "../Pages/AddOrder/AddOrder";
 
 type State = {
   viewState: string,
@@ -70,7 +69,7 @@ showSearchInput = () => {
           viewState={this.state.viewState}
           changeViewState={this.changeViewState}
         />
-        <MobileHome />
+        
           <ChatScreenFooter />   
       </div>
     </>
