@@ -20,6 +20,10 @@ import AllPayments from "./Pages/Reports/AllPayments";
 import ChargesPage from "./Pages/Master/ChargesPage";
 import AllCustomers from "./Pages/Reports/AllCustomers";
 import Forms from "./Pages/Master/Forms";
+import NewOrder from "./Pages/NewOrder";
+import Design from "./Pages/Design";
+import PrintSk from "./Pages/PrintSk";
+import PrintOther from "./Pages/NewOrder";
 import DealerPage from "./Pages/Master/Dealer";
 
 function App() {
@@ -43,6 +47,10 @@ function App() {
               <Route path="/admin/customers" element={<CustomerPage />} />
               <Route path="/admin/addCase" element={<AddOrder />} />
               <Route path="/admin/cases" element={<AllCases />} />
+              <Route path ="/newOrder" element={<NewOrder />} />
+              <Route path ="/design" element={<Design />} />
+              <Route path ="/printsk" element={<PrintSk />} />
+              <Route path ="/printOther" element={<PrintOther />} />
               <Route path="/admin/upcomingEmi" element={<UpcomingEmi />} />
               <Route path="/admin/allPayments" element={<AllPayments />} />
               <Route path="/admin/charges" element={<ChargesPage />} />
