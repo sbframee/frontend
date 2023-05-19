@@ -28,7 +28,7 @@ import DealerPage from "./Pages/Master/Dealer";
 
 function App() {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
-  //axios.defaults.baseURL = "http://13.233.186.88:5000/";
+  //axios.defaults.baseURL = "http://43.205.62.206:5000";
   axios.defaults.baseURL = "http://localhost:5000";
 
   
