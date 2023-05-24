@@ -77,15 +77,11 @@ const AddCasePopup = ({ onSave })=> {
           <div className="overlay">
             <div
               className="modal"
-              style={{  padding: " 10px"}}
+              style={{  right: "125px"}}
             >
              <div
                 className="content"
-                style={{
-                  height: "fit-content",
-                  padding: "20px",
-                  width: "fit-content",
-                }}
+                
               >
                   
                     <div className="row">

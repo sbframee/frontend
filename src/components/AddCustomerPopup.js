@@ -1,8 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { v4 as uuid } from "uuid";
-import { Add } from "@mui/icons-material";
 import axios from 'axios';
-
 const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
         const [data, setdata] = useState({});
       
@@ -12,23 +9,19 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
           if (popupInfo?.type === "edit")
             setdata({
               ...popupInfo?.data,
-              mobile: popupInfo?.data?.mobile.map((a) => ({ uuid: uuid(), ...a })),
             });
           else
             setdata({
               customer_gender: "",
-              customer_lastname: "",
-              customer_middlename: "",
-              customer_firstname: "",
+              customer_name: "",
               address: "",
-              mobile: [{ uuid: uuid(), number: "", label: "" }],
             });
         }, [popupInfo?.data, popupInfo?.type]);
       
         const submitHandler = async (e) => {
           e.preventDefault();
       
-          if (!data.customer_firstname) {
+          if (!data.customer_name) {
             setErrorMassage("Please insert User Title");
             return;
           }
@@ -62,64 +55,32 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
         };
       
         return (
-          <div className="overlay">
+          <div className="overlay" style={{ }}>
             <div
-              className="modal"
-              style={{ alignItems: "center" }}
+              className="modal" style={{right: "120px"  }}
             >
-             
-                  <form className="form" onSubmit={submitHandler}>
+              <div
+                className="content"
+              >
+                <div>
+                  <form onSubmit={submitHandler}>
                     <div className="row">
                       <h1>{popupInfo?.type === "edit" ? "Edit" : "Add"} {name}</h1>
                     </div>
       
-                    <div className="formGroup">
+                    <div>
                       <div className="row">
                         <label className="selectLabel">
-                          First Name
+                          Name
                           <input
                             type="text"
                             name="route_title"
                             className="numberInput"
-                            value={data?.customer_firstname}
+                            value={data?.customer_name}
                             onChange={(e) =>
                               setdata({
                                 ...data,
-                                customer_firstname: e.target.value,
-                              })
-                            }
-                            maxLength={60}
-                          />
-                        </label>
-      
-                        <label className="selectLabel">
-                          Middle Name
-                          <input
-                            type="text"
-                            name="route_title"
-                            className="numberInput"
-                            value={data?.customer_middlename}
-                            onChange={(e) =>
-                              setdata({
-                                ...data,
-                                customer_middlename: e.target.value,
-                              })
-                            }
-                            maxLength={60}
-                          />
-                        </label>
-      
-                        <label className="selectLabel">
-                          Last Name
-                          <input
-                            type="text"
-                            name="route_title"
-                            className="numberInput"
-                            value={data?.customer_lastname}
-                            onChange={(e) =>
-                              setdata({
-                                ...data,
-                                customer_lastname: e.target.value,
+                                customer_name: e.target.value,
                               })
                             }
                             maxLength={60}
@@ -148,6 +109,8 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
                             <option value="Others">Others</option>
                           </select>
                         </label>
+                        </div>
+                        <div className='row'>
                         <label className="selectLabel">
                           Date Of Birth
                           <input
@@ -164,6 +127,8 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
                             maxLength={60}
                           />
                         </label>
+                        </div>
+                        <div className='row'>
                         <label className="selectLabel">
                           Address
                           <input
@@ -181,80 +146,7 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
                           />
                         </label>
                       </div>
-                      <div className="row">
-                        <label className="selectLabel" style={{ width: "100%" }}>
-                          Mobiles
-                          {data?.mobile?.map((a) => (
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                width: "100%",
-                              }}
-                            >
-                              <input
-                                key={a.uuid}
-                                type="text"
-                                name="route_title"
-                                className="numberInput"
-                                placeholder="Number"
-                                value={
-                                  data?.mobile.find((b) => b.uuid === a.uuid)?.number
-                                }
-                                onChange={(e) =>
-                                  setdata((prev) => ({
-                                    ...prev,
-                                    mobile: prev?.mobile?.map((b) =>
-                                      a.uuid === b.uuid
-                                        ? { ...b, number: e.target.value }
-                                        : b
-                                    ),
-                                  }))
-                                }
-                                maxLength={60}
-                              />
-                              <input
-                                key={a.uuid}
-                                type="text"
-                                name="route_title"
-                                className="numberInput"
-                                placeholder="lable"
-                                value={
-                                  data?.mobile.find((b) => b.uuid === a.uuid)?.label
-                                }
-                                onChange={(e) =>
-                                  setdata((prev) => ({
-                                    ...prev,
-                                    mobile: prev.mobile.map((b) =>
-                                      a.uuid === b.uuid
-                                        ? { ...b, label: e.target.value }
-                                        : b
-                                    ),
-                                  }))
-                                }
-                                maxLength={60}
-                              />
-                            </div>
-                          ))}
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setdata((prev) => ({
-                                ...prev,
-                                mobile: [
-                                  ...prev.mobile,
-                                  { uuid: uuid(), number: "", lable: "" },
-                                ],
-                              }))
-                            }
-                            className="item-sales-search"
-                            style={{ width: "fit-content" }}
-                          >
-                            <Add />
-                          </button>
-                        </label>
-                      </div>
+                     
                     </div>
                     <i style={{ color: "red" }}>
                       {errMassage === "" ? "" : "Error: " + errMassage}
@@ -269,7 +161,9 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
                   x
                 </button>
               </div>
-                    );
+            </div>
+          </div>
+        );
       
       
 }
