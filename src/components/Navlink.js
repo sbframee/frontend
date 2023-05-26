@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import {  useNavigate, useParams } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import SwipeableViews from "react-swipeable-views";
 
 const Navlink = () => {
-  const [disabled, setDisabled] = useState(false);
-  const [currPage, setCurrPage] = useState("/intro");
-  const params = useParams();
+  const [activeTab, setActiveTab] = useState(0);
   const navigate = useNavigate();
   const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
     ({ theme }) => ({
@@ -17,12 +15,7 @@ const Navlink = () => {
       },
     })
   );
-  function checkScrollDirectionIsUp(event) {
-    if (event.wheelDelta) {
-      return event.wheelDelta > 0;
-    }
-    return event.deltaY < 0;
-  }
+
   const panels = [
     { index: 0, name: "NewOrder", url: "/newOrder" },
     { index: 1, name: "Design", url: "/design" },
@@ -30,84 +23,54 @@ const Navlink = () => {
     { index: 3, name: "PrintOther", url: "/printOther" },
     { index: 4, name: "Binding", url: "/binding" },
     { index: 5, name: "Fitting", url: "/fitting" },
+    { index: 3, name: "Ready", url: "/ready" },
+    { index: 4, name: "HoldSK", url: "/holdSk" },
+    { index: 5, name: "Customer", url: "/customer" },
   ];
- 
-  useEffect(() => {
-    const controller = new AbortController();
-    if (params.name?.includes("token-")) {
-      localStorage.setItem("token", params.name);
-    }
-    return () => {
-      controller.abort();
-    };
-  }, []);
 
- 
-  const handleChange = (e, value) => {
-    navigate(value.url + "/" + (localStorage.getItem("token") || ""));
-    
+  const handleChange = (event, newValue) => {
+    setActiveTab(newValue);
+    navigate(panels[newValue].url);
   };
-  function a11yProps(index) {
-    return {
-      id: index,
-      "aria-controls": panels.find((a) => a.url === index),
-      value: panels.find((a) => a.url === index),
-    };
-  }
+
+  const handleTabClick = (index) => {
+    setActiveTab(index);
+    navigate(panels[index].url);
+  };
+
   return (
     <>
       <Box>
         <Tabs
-          value={panels.find((a) => a.url === currPage)}
+          value={activeTab}
           onChange={handleChange}
-         
+          indicatorColor="primary"
+          textColor="primary"
+          variant="scrollable"
+          scrollButtons="auto"
         >
-          {panels.map((item, i) => {
-            return (
-              <StyledTab key={i} label={item.name} {...a11yProps(item.url)} />
-            );
-          })}
+          {panels.map((item, i) => (
+            <StyledTab
+              key={i}
+              label={item.name}
+              onClick={() => handleTabClick(i)}
+            />
+          ))}
         </Tabs>
       </Box>
 
-      
-        <Box
-          sx={{
-            width: "100%",
-            height: "calc(100vh - 1rem)",
-            maxHeight: "calc(100vh - 64px)",
-            overflow: "hidden",
-            background: "white",
-            paddingTop: "20px",
-          }}
-        >
-         
-        </Box>
-      
-        <div
-          
-          className="row"
-          onWheel={(e) => {
-            if (disabled) {
-              return;
-            } else {
-              if (checkScrollDirectionIsUp(e)) {
-                console.log("UP");
-               
-                setDisabled(true);
-                setTimeout(() => setDisabled(false), 500);
-              } else {
-                console.log("Down");
-                
-                setDisabled(true);
-                setTimeout(() => setDisabled(false), 500);
-              }
-            }
-          }}
-        >
-          
-        </div>
-      
+      <SwipeableViews
+        axis="x"
+        index={activeTab}
+        onChangeIndex={handleChange}
+        enableMouseEvents
+      >
+        {panels.map((item, i) => (
+          <div key={i} style={{ height: "100%" }}>
+            {/* Content for each tab */}
+          </div>
+        ))}
+      </SwipeableViews>
     </>
   );
 };

@@ -26,6 +26,10 @@ import PrintSk from "./Pages/PrintSk";
 import PrintOther from "./Pages/PrintOther";
 import Binding from "./Pages/binding";
 import Fitting from "./Pages/fitting";
+import Ready from "./Pages/ready";
+import HoldSK from "./Pages/HoldSk";
+import Customer from "./Pages/Customer";
+
 import DealerPage from "./Pages/Master/Dealer";
 
 function App() {
@@ -53,8 +57,11 @@ function App() {
               <Route path ="/design" element={<Design />} />
               <Route path ="/printsk" element={<PrintSk />} />
               <Route path ="/printOther" element={<PrintOther />} />
-              <Route path="./binding" element={<Binding />} />
-              <Route path ="./fitting" element={<Fitting />} />
+              <Route path="/binding" element={<Binding />} />
+              <Route path ="/fitting" element={<Fitting />} />
+              <Route path ="/ready" element={<Ready />} />
+              <Route path="./holdSk" element={<HoldSK />} />
+              <Route path ="/customer" element={<Customer />} />
               <Route path="/admin/upcomingEmi" element={<UpcomingEmi />} />
               <Route path="/admin/allPayments" element={<AllPayments />} />
               <Route path="/admin/charges" element={<ChargesPage />} />

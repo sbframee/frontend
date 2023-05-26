@@ -175,13 +175,13 @@ export default function AddOrder({onSave}) {
   return (
     <>
     
-          <div className="overlay">
+          <div>
            
             <div className="modal"
-              style={{  right: "125px"}}>
+              style={{ width:"90%", height: "100vh", left: "20px", bottom: "100px"}}>
             <div className="content">
               <div className="row">
-                <h2>Add Case </h2>
+                <h2 style={{paddingRight: "100px"}}>Add Case </h2>
               </div>
             <div>
               <div>

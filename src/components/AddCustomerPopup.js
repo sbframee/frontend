@@ -57,7 +57,7 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
         return (
           <div className="overlay" style={{ }}>
             <div
-              className="modal" style={{right: "120px"  }}
+              className="modal"  style={{ width:"90%", height: "100vh", left: "20px"}}
             >
               <div
                 className="content"
@@ -153,7 +153,7 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
                     </i>
       
                     <button type="submit" className="submit">
-                      Save changes
+                      Save 
                     </button>
                   </form>
                 </div>

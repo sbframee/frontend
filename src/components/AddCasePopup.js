@@ -2,10 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const AddCasePopup = ({ onSave })=> {
-      
-      
-        const [errMassage, setErrorMassage] = useState("");
-      
+         
         const [name, setName] = useState('');
         const [mobileno, setMobileNo] = useState('');
         const [countries, setCountries] = useState([]);
@@ -165,10 +162,7 @@ const AddCasePopup = ({ onSave })=> {
             
                      
                     </div>
-                    <i style={{ color: "red" }}>
-                      {errMassage === "" ? "" : "Error: " + errMassage}
-                    </i>
-      
+                    
                    
                 </div>
                 <button onClick={onSave} className="closeButton">
