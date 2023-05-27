@@ -60,7 +60,7 @@ function App() {
               <Route path="/binding" element={<Binding />} />
               <Route path ="/fitting" element={<Fitting />} />
               <Route path ="/ready" element={<Ready />} />
-              <Route path="./holdSk" element={<HoldSK />} />
+              <Route path="/holdSk" element={<HoldSK />} />
               <Route path ="/customer" element={<Customer />} />
               <Route path="/admin/upcomingEmi" element={<UpcomingEmi />} />
               <Route path="/admin/allPayments" element={<AllPayments />} />
