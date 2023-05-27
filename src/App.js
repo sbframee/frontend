@@ -19,9 +19,10 @@ import UpcomingEmi from "./Pages/Reports/UpcomingEmi";
 import AllPayments from "./Pages/Reports/AllPayments";
 import ChargesPage from "./Pages/Master/ChargesPage";
 import AllCustomers from "./Pages/Reports/AllCustomers";
+import OrderPopUp from "./components/OrderPopup";
 import Forms from "./Pages/Master/Forms";
-import NewOrder from "./Pages/newOrder";
-import Design from "./Pages/design";
+import NewOrder from "./Pages/NewOrder";
+import Design from "./Pages/Design";
 import PrintSk from "./Pages/PrintSk";
 import PrintOther from "./Pages/PrintOther";
 import Binding from "./Pages/binding";
@@ -62,6 +63,7 @@ function App() {
               <Route path ="/ready" element={<Ready />} />
               <Route path="/holdSk" element={<HoldSK />} />
               <Route path ="/customer" element={<Customer />} />
+              <Route path ="/order" element={<OrderPopUp />} />
               <Route path="/admin/upcomingEmi" element={<UpcomingEmi />} />
               <Route path="/admin/allPayments" element={<AllPayments />} />
               <Route path="/admin/charges" element={<ChargesPage />} />

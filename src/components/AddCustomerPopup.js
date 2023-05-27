@@ -1,5 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios';
+const { v4: uuid } = require("uuid");
+
 const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
         const [data, setdata] = useState({});
       
@@ -7,14 +9,16 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
       
         useEffect(() => {
           if (popupInfo?.type === "edit")
-            setdata({
-              ...popupInfo?.data,
-            });
+          setdata({
+            ...popupInfo?.data,
+            mobile: popupInfo?.data?.mobile.map((a) => ({ uuid: uuid(), ...a })),
+          });
           else
             setdata({
               customer_gender: "",
               customer_name: "",
               address: "",
+              mobile: [{ uuid: uuid(), number: "", label: "" }],
             });
         }, [popupInfo?.data, popupInfo?.type]);
       
@@ -87,6 +91,64 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
                           />
                         </label>
                       </div>
+                      <div className="row">
+                        <label className="selectLabel" style={{ width: "100%" }}>
+                          Mobiles
+                          {data?.mobile?.map((a) => (
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                width: "100%",
+                              }}
+                            >
+                              <input
+                                key={a.uuid}
+                                type="text"
+                                name="route_title"
+                                className="numberInput"
+                                placeholder="Number"
+                                value={
+                                  data?.mobile.find((b) => b.uuid === a.uuid)?.number
+                                }
+                                onChange={(e) =>
+                                  setdata((prev) => ({
+                                    ...prev,
+                                    mobile: prev?.mobile?.map((b) =>
+                                      a.uuid === b.uuid
+                                        ? { ...b, number: e.target.value }
+                                        : b
+                                    ),
+                                  }))
+                                }
+                                maxLength={60}
+                              />
+                              <input
+                                key={a.uuid}
+                                type="text"
+                                name="route_title"
+                                className="numberInput"
+                                placeholder="lable"
+                                value={
+                                  data?.mobile.find((b) => b.uuid === a.uuid)?.label
+                                }
+                                onChange={(e) =>
+                                  setdata((prev) => ({
+                                    ...prev,
+                                    mobile: prev.mobile.map((b) =>
+                                      a.uuid === b.uuid
+                                        ? { ...b, label: e.target.value }
+                                        : b
+                                    ),
+                                  }))
+                                }
+                                maxLength={60}
+                              />
+                            </div>
+                          ))}
+                          </label>
+                          </div>
                       <div className="row">
                         <label className="selectLabel">
                           Gender
