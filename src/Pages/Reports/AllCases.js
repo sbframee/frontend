@@ -15,7 +15,6 @@ import Select from "react-select";
 
 import * as XLSX from "xlsx";
 import JsPDF from "jspdf";
-import CaseAggrement from "../../components/CaseAggrement";
 import HeaderAdminM from "../../components/HeaderAdminM";
 
 const fileType =
@@ -362,7 +361,6 @@ const AllCases = () => {
               // padding: "10px"
             }}
           >
-            <CaseAggrement selectedCase={selectedCase} />
           </div>
         </div>
       ) : (

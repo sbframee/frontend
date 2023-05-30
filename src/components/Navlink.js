@@ -17,7 +17,7 @@ const Navlink = () => {
   );
 
   const panels = [
-    { index: 0, name: "NewOrder", url: "/newOrder" },
+    { index: 0, name: "NewOrder", url: "/order" },
     { index: 1, name: "Design", url: "/design" },
     { index: 2, name: "PrintSk", url: "/printsk" },
     { index: 3, name: "PrintOther", url: "/printOther" },
