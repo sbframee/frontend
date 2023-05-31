@@ -61,7 +61,7 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
         return (
           <div className="overlay" style={{ }}>
             <div
-              className="modal"  style={{ width:"90%", height: "100vh", left: "20px"}}
+              className="modal"  style={{ width:"90%", height: "100vh", left: "20px", bottom: "200px"}}
             >
               <div
                 className="content"

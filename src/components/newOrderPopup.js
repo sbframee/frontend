@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 
-const OrderPopup = () => {
+const NewOrderPopup = () => {
+  const [items, setItems] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
-  const [latestOrderID, setLatestOrderID] = useState("");
+
+  const GetCaseData = async () => {
+    const response = await axios.get("/cases/GetCaseList");
+    console.log(response);
+    if (response.data.success) setItems(response.data.result);
+  };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/cases/latest")
-      .then((response) => {
-        setLatestOrderID(response.data.latestOrderID);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    GetCaseData();
   }, []);
+
+  let itemsDetails = useMemo(() => items?.filter((a) => a?.order_id), [items]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -41,10 +42,12 @@ const OrderPopup = () => {
                 </tr>
               </thead>
               <tbody className="tbody">
-                <tr>
-                  <td>1</td>
-                  <td>{latestOrderID || ""}</td>
-                </tr>
+                {itemsDetails?.map((item, i, array) => (
+                  <tr key={Math.random()} style={{ height: "30px" }}>
+                    <td>{i + 1}</td>
+                    <td>{item?.order_id || ""}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -57,4 +60,4 @@ const OrderPopup = () => {
   );
 };
 
-export default OrderPopup;
+export default NewOrderPopup;

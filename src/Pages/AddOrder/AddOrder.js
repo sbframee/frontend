@@ -38,6 +38,21 @@ export default function AddOrder({ onSave }) {
   const [priority, setPriority] = useState("");
   const [details, setDetails] = useState({ customers: [] });
   const [newCustomerForm, setNewCustomerForm] = useState(false);
+  const [latestOrderId, setLatestOrderId] = useState(0);
+
+  const fetchLatestOrderId = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/cases/GetCaseList");
+      const orders = response.data.result;
+      if (orders.length > 0) {
+        const latestOrder = orders[orders.length - 1];
+        const latestOrderId = latestOrder.order_id;
+        setLatestOrderId(latestOrderId);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getItemsData = async () => {
     const response = await axios.get("/customers/GetCustomerList");
@@ -47,6 +62,7 @@ export default function AddOrder({ onSave }) {
 
   useEffect(() => {
     getItemsData();
+    fetchLatestOrderId();
   }, []);
 
   useEffect(() => {
@@ -104,9 +120,12 @@ export default function AddOrder({ onSave }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const newOrderId = latestOrderId + 1;
+
     const formData = {
       customer: customerValue.value,
       priority,
+      order_id: newOrderId, // Include the new order ID
     };
 
     axios
@@ -114,6 +133,9 @@ export default function AddOrder({ onSave }) {
       .then((response) => {
         console.log(response.data);
         window.location.assign("/order");
+        setLatestOrderId(newOrderId); // Update the latest order ID in the state
+        setOrder(initials); // Reset the form
+        fetchLatestOrderId(); // Fetch the latest order ID from the API
       })
       .catch((error) => {
         console.error(error);
@@ -129,12 +151,12 @@ export default function AddOrder({ onSave }) {
             width: "90%",
             height: "100vh",
             left: "20px",
-            bottom: "100px",
+            bottom: "400px",
           }}
         >
           <div className="content">
             <div className="row">
-              <h2 style={{ paddingRight: "100px" }}>Add Case </h2>
+              <h2 style={{ paddingRight: "100px" }}>Add Case</h2>
             </div>
             <div>
               <div>

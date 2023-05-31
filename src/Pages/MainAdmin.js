@@ -1,80 +1,144 @@
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import axios from "axios";
+
 import Header from "../components/Header";
 import ChatScreenFooter from "../components/ChatScreenFooter";
 import Navlink from "../components/Navlink";
+import UpdatePopup from "../components/updatePopup";
 
-type State = {
-  viewState: string,
-  chatScreenIsVisible: boolean,
-  currentChatId: number,
-  searchTerm: string,
-  searchInputIsvisible: boolean,
-  dropdownIsVisible: boolean
-};
+const MainAdmin = () => {
+  const [items, setItems] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [viewState, setViewState] = useState("2");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchInputIsvisible, setSearchInputIsvisible] = useState(false);
+  const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [updateForm, setUpdateForm] = useState(false);
 
-class MainAdminM extends React.Component<null, State> {
-  state = {
-    viewState: "2",
-    chatScreenIsVisible: false,
-    currentChatId: 0,
-    searchTerm: "",
-    searchInputIsvisible: false,
-    dropdownIsVisible: false
+  const showSearchInput = () => {
+    setSearchInputIsvisible(true);
+    setViewState("2");
   };
 
-showSearchInput = () => {
-    this.setState({ searchInputIsvisible: true, viewState: "2" });
+  const closeSearchInput = () => {
+    setSearchInputIsvisible(false);
+    setSearchTerm("");
   };
 
- closeSearchInput = () => {
-    this.setState({ searchInputIsvisible: false, searchTerm: "" });
+  const handleSearchtermChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
- handleSearchtermChange = (event) => {
-    this.setState({ searchTerm: event.target.value });
-  };
-
- changeViewState = (event) => {
+  const changeViewState = (event) => {
     const newState = event.target.dataset.nav;
-    this.setState({ viewState: newState });
+    setViewState(newState);
   };
 
- showChatScreen = (id) => {
-    this.setState({ chatScreenIsVisible: true, currentChatId: id });
+  const toggleDropdown = () => {
+    setDropdownIsVisible((prevState) => !prevState.dropdownIsVisible);
   };
 
- closeChatScreen = () => {
-    this.setState({ chatScreenIsVisible: false, currentChatId: 0 });
+  const getCaseData = async () => {
+    try {
+      const response = await axios.get("/cases/GetCaseList");
+      console.log(response);
+      if (response.data.success) {
+        setItems(response.data.result);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
- toggleDropdown = () => {
-    this.setState(prevState => {
-      return { dropdownIsVisible: !prevState.dropdownIsVisible };
-    });
+  useEffect(() => {
+    getCaseData();
+  }, []);
+
+  const itemsDetails = useMemo(() => items?.filter((a) => a?.order_id), [items]);
+
+  const handleUpdateClick = (order) => {
+    setSelectedOrder(order);
+    setSelectedOrderId(order?.order_id);
+    setUpdateForm(true);
   };
 
-  render() {
+  const handleClosePopup = () => {
+    setUpdateForm(false);
+  };
+
+  const handleSaveUpdate = (updatedData) => {
+    // Handle saving the updated data here
+    console.log("Updated Data:", updatedData);
+    handleClosePopup();
+  };
+
   return (
     <>
-      
       <div className="right-side">
-      <Header searchTerm={this.state.searchTerm}
-          handleSearchtermChange={this.handleSearchtermChange}
-          showSearchInput={this.showSearchInput}
-          closeSearchInput={this.closeSearchInput}
-          searchInputIsvisible={this.state.searchInputIsvisible} 
-          toggleDropdown={this.toggleDropdown}
-          dropdownIsVisible={this.state.dropdownIsVisible} />   
-           <Navlink
-          viewState={this.state.viewState}
-          changeViewState={this.changeViewState}
+        <Header
+          searchTerm={searchTerm}
+          handleSearchtermChange={handleSearchtermChange}
+          showSearchInput={showSearchInput}
+          closeSearchInput={closeSearchInput}
+          searchInputIsvisible={searchInputIsvisible}
+          toggleDropdown={toggleDropdown}
+          dropdownIsVisible={dropdownIsVisible}
         />
-        
-          <ChatScreenFooter />   
+        <Navlink viewState={viewState} changeViewState={changeViewState} />
+
+        <div>
+          <table
+            className="user-table"
+            style={{
+              maxWidth: "100vw",
+              height: "fit-content",
+              overflowX: "scroll",
+            }}
+          >
+            <thead>
+              <tr>
+                <th style={{ width: "50px" }}>S.N</th>
+                <th>Order ID</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody className="tbody">
+              {itemsDetails?.map((item, i, array) => (
+                <tr key={Math.random()} style={{ height: "30px" }}>
+                  <td>{i + 1}</td>
+                  <td>{item?.order_id || ""}</td>
+                  <td>
+                    <button
+                      type="button"
+                      onClick={() => handleUpdateClick(item)}
+                      className="item-sales-search"
+                      style={{
+                        width: "fit-content",
+                        top: 0,
+                      }}
+                    >
+                      Update
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <ChatScreenFooter />
       </div>
+      {updateForm && (
+        <UpdatePopup
+          onSave={handleSaveUpdate}
+          selectedOrder={selectedOrder}
+          selectedOrderId={selectedOrderId}
+          onClose={handleClosePopup}
+        />
+      )}
     </>
   );
-  };
 };
 
-export default MainAdminM;
+export default MainAdmin;

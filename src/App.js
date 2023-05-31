@@ -21,7 +21,6 @@ import ChargesPage from "./Pages/Master/ChargesPage";
 import AllCustomers from "./Pages/Reports/AllCustomers";
 import OrderPopUp from "./components/OrderPopup";
 import Forms from "./Pages/Master/Forms";
-import NewOrder from "./Pages/NewOrder";
 import Design from "./Pages/Design";
 import PrintSk from "./Pages/PrintSk";
 import PrintOther from "./Pages/PrintOther";
@@ -30,8 +29,8 @@ import Fitting from "./Pages/fitting";
 import Ready from "./Pages/ready";
 import HoldSK from "./Pages/HoldSk";
 import Customer from "./Pages/Customer";
-
 import DealerPage from "./Pages/Master/Dealer";
+import NewOrderPopup from "./components/newOrderPopup";
 
 function App() {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
@@ -54,7 +53,7 @@ function App() {
               <Route path="/admin/customers" element={<CustomerPage />} />
               <Route path="/admin/addCase" element={<AddOrder />} />
               <Route path="/admin/cases" element={<AllCases />} />
-              <Route path ="/newOrder" element={<NewOrder />} />
+              <Route path ="/newOrder" element={<NewOrderPopup />} />
               <Route path ="/design" element={<Design />} />
               <Route path ="/printsk" element={<PrintSk />} />
               <Route path ="/printOther" element={<PrintOther />} />

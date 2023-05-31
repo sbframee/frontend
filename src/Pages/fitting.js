@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Fitting = () => {
+    const [isOpen, setIsOpen] = useState(true);
+    const handleClose = () => {
+        setIsOpen(false);
+        window.location.assign("/admin");
+      };
+
+      if (!isOpen) {
+        return null; // Don't render the popup if isOpen is false
+      }
     
     return (
-
-        <div>
-      <h2>Fitting</h2>
-     </div>
-    )
-}
+    <div className="overlay" style={{}}>
+      <div className="modal" style={{ width: "90%", height: "100vh", left: "20px" }}>
+        <div className="content">
+          <div>
+            <h1>Fitting</h1>
+          </div>
+          <button className="closeButton" onClick={handleClose}>
+            X
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Fitting;
