@@ -11,14 +11,13 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
           if (popupInfo?.type === "edit")
           setdata({
             ...popupInfo?.data,
-            mobile: popupInfo?.data?.mobile.map((a) => ({ uuid: uuid(), ...a })),
           });
           else
             setdata({
               customer_gender: "",
               customer_name: "",
               address: "",
-              mobile: [{ uuid: uuid(), number: "", label: "" }],
+              mobile: "",
             });
         }, [popupInfo?.data, popupInfo?.type]);
       
@@ -59,7 +58,7 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
         };
       
         return (
-          <div className="overlay" style={{ }}>
+          <div className="overlay">
             <div
               className="modal"  style={{ width:"90%", height: "100vh", left: "20px", bottom: "200px"}}
             >
@@ -93,60 +92,20 @@ const AddCustomerPopup = ({ onSave, popupInfo, name })=> {
                       </div>
                       <div className="row">
                         <label className="selectLabel" style={{ width: "100%" }}>
-                          Mobiles
-                          {data?.mobile?.map((a) => (
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                width: "100%",
-                              }}
-                            >
-                              <input
-                                key={a.uuid}
-                                type="text"
-                                name="route_title"
-                                className="numberInput"
-                                placeholder="Number"
-                                value={
-                                  data?.mobile.find((b) => b.uuid === a.uuid)?.number
-                                }
-                                onChange={(e) =>
-                                  setdata((prev) => ({
-                                    ...prev,
-                                    mobile: prev?.mobile?.map((b) =>
-                                      a.uuid === b.uuid
-                                        ? { ...b, number: e.target.value }
-                                        : b
-                                    ),
-                                  }))
-                                }
-                                maxLength={60}
-                              />
-                              <input
-                                key={a.uuid}
-                                type="text"
-                                name="route_title"
-                                className="numberInput"
-                                placeholder="lable"
-                                value={
-                                  data?.mobile.find((b) => b.uuid === a.uuid)?.label
-                                }
-                                onChange={(e) =>
-                                  setdata((prev) => ({
-                                    ...prev,
-                                    mobile: prev.mobile.map((b) =>
-                                      a.uuid === b.uuid
-                                        ? { ...b, label: e.target.value }
-                                        : b
-                                    ),
-                                  }))
-                                }
-                                maxLength={60}
-                              />
-                            </div>
-                          ))}
+                          Mobile Number
+                          <input
+                            type="number"
+                            name="route_title"
+                            className="numberInput"
+                            value={data?.mobile}
+                            onChange={(e) =>
+                              setdata({
+                                ...data,
+                                mobile: e.target.value,
+                              })
+                            }
+                            maxLength={60}
+                          />
                           </label>
                           </div>
                       <div className="row">

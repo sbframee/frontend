@@ -8,6 +8,7 @@ export default function UpdatePopup({ onSave, selectedOrderId, onClose }) {
   const [errMessage, setErrorMessage] = useState("");
   const [priorities, setPriorities] = useState([]);
   const [priorityName, setPriorityName] = useState([]);
+  const [customerDetails, setCustomerDetails] = useState({});
 
   useEffect(() => {
     fetchCaseTypes();
@@ -19,35 +20,47 @@ export default function UpdatePopup({ onSave, selectedOrderId, onClose }) {
     axios
       .get("http://localhost:5000/priority/getCaseType")
       .then((response) => setPriorities(response.data))
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   };
 
   const fetchCaseNames = () => {
     axios
       .get("http://localhost:5000/priority/getCaseName")
       .then((response) => setPriorityName(response.data))
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   };
 
-  const fetchCaseDetails = () => {
+  const fetchCaseDetails = async () => {
     if (selectedOrderId) {
-      axios
-        .get(`http://localhost:5000/cases/GetCaseDetails/${selectedOrderId}`)
-        .then((response) => {
-          const orderData = response.data.result;
-          setSelectedOrder(orderData);
-          setData((prevState) => ({
-            ...prevState,
-            case_type: orderData.case_type,
-            case_name: orderData.case_name,
-          }));
-        })
-        .catch((error) => {
+      try {
+        const orderResponse = await axios.get(`http://localhost:5000/cases/GetCaseDetails/${selectedOrderId}`);
+        const orderData = orderResponse.data.result;
+        console.log("Order Data:", orderData);
+        setSelectedOrder(orderData);
+        console.log("Customer UUID:", orderData.customer_uuid);
+  
+        setData((prevState) => ({
+          ...prevState,
+          case_type: orderData.case_type,
+          case_name: orderData.case_name,
+        }));
+  
+        // Fetch customer details based on customer_uuid
+        try {
+          const customerResponse = await axios.get(`http://localhost:5000/customers/getCustomerDetails/${orderData.customer_uuid}`);
+          const customerData = customerResponse.data.result;
+          console.log("Customer Data:", customerData);
+          setCustomerDetails(customerData);
+        } catch (error) {
           console.error(error);
-        });
+          setCustomerDetails({});
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
-
+   
   const onPriorityChange = (event) => {
     const selectedCaseType = event.target.value;
     setData((prevState) => ({
@@ -65,15 +78,12 @@ export default function UpdatePopup({ onSave, selectedOrderId, onClose }) {
   };
 
   const submitHandler = async (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-  
+
     if (!data.case_type) {
       setErrorMessage("Please select a case type");
       return;
     }
-  
+
     try {
       const response = await axios.put(
         `http://localhost:5000/cases/putCases/${selectedOrderId}`,
@@ -82,17 +92,19 @@ export default function UpdatePopup({ onSave, selectedOrderId, onClose }) {
           case_name: data.case_name,
         }
       );
-  
+
       if (response.data.success) {
         const updatedOrder = { ...selectedOrder, ...data };
         onSave(updatedOrder);
         onClose();
+      } else {
+        setErrorMessage("Failed to update case");
       }
     } catch (error) {
       console.error(error);
     }
   };
-  
+
   return (
     <>
       <div>
@@ -102,7 +114,7 @@ export default function UpdatePopup({ onSave, selectedOrderId, onClose }) {
             width: "90%",
             height: "100vh",
             left: "20px",
-            bottom: "400px",
+            bottom: "100px",
           }}
         >
           <div className="content">
@@ -111,12 +123,23 @@ export default function UpdatePopup({ onSave, selectedOrderId, onClose }) {
             </div>
             <div>
               <form>
-                <div>
-                  <label className="selectLabel">
-                    Order ID
-                    <input type="text" value={selectedOrder?.order_id} readOnly />
-                  </label>
-                </div>
+              {customerDetails && customerDetails.customer_name && (
+  <div>
+    <label className="selectLabel">
+      Name
+      <input type="text" value={customerDetails.customer_name} readOnly />
+    </label>
+  </div>
+)}
+{customerDetails && customerDetails.mobile && (
+  <div>
+    <label className="selectLabel">
+      Mobile Number
+      <input type="text" value={customerDetails.mobile} readOnly />
+    </label>
+  </div>
+)}
+
 
                 <div className="row">
                   <label className="selectLabel" style={{ width: "100%" }}>
@@ -157,10 +180,13 @@ export default function UpdatePopup({ onSave, selectedOrderId, onClose }) {
                 {errMessage && <p>{errMessage}</p>}
 
                 <div className="bottomContent" style={{ padding: "20px" }}>
-                <button type="submit" onClick={() => { submitHandler(); onClose(); }}>
-    Update
-  </button>
+                  <button type="submit" onClick={() => { submitHandler(); onClose(); }}>
+                    Update
+                  </button>
                 </div>
+                <button onClick={onClose} className="closeButton">
+                x
+              </button>
               </form>
             </div>
           </div>

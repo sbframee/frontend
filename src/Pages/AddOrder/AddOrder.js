@@ -33,6 +33,7 @@ let initials = {
 
 export default function AddOrder({ onSave }) {
   const [order, setOrder] = useState(initials);
+  const [caseType, setCaseType] = useState("New Order");
   const [customersData, setCustomersData] = useState([]);
   const [priorities, setPriorities] = useState([]);
   const [priority, setPriority] = useState("");
@@ -123,8 +124,9 @@ export default function AddOrder({ onSave }) {
     const newOrderId = latestOrderId + 1;
 
     const formData = {
-      customer: customerValue.value,
+      customer_uuid: customerValue.value,
       priority,
+      case_type: caseType,
       order_id: newOrderId, // Include the new order ID
     };
 
@@ -147,12 +149,7 @@ export default function AddOrder({ onSave }) {
       <div>
         <div
           className="modal"
-          style={{
-            width: "90%",
-            height: "100vh",
-            left: "20px",
-            bottom: "400px",
-          }}
+          style={{ width:"90%", height: "100vh", left: "20px", bottom: "200px"}}
         >
           <div className="content">
             <div className="row">

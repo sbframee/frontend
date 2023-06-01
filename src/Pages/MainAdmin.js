@@ -44,19 +44,52 @@ const MainAdmin = () => {
       const response = await axios.get("/cases/GetCaseList");
       console.log(response);
       if (response.data.success) {
-        setItems(response.data.result);
+        const cases = response.data.result;
+  
+        // Fetch customer details for each case
+        const casesWithCustomerData = await Promise.all(
+          cases.map(async (caseItem) => {
+            try {
+              const customerResponse = await axios.get(`/customers/getCustomerDetails/${caseItem.customer_uuid}`);
+              const customerData = customerResponse.data.result;
+              return {
+                ...caseItem,
+                customer_name: customerData.customer_name,
+                mobile: customerData.mobile
+              };
+            } catch (error) {
+              console.error(error);
+              return caseItem; // Return case item without customer details on error
+            }
+          })
+        );
+  
+        setItems(casesWithCustomerData);
       }
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   useEffect(() => {
     getCaseData();
   }, []);
 
-  const itemsDetails = useMemo(() => items?.filter((a) => a?.order_id), [items]);
-
+  const itemsDetails = useMemo(() => {
+    if (selectedOrder && selectedOrder.order_id && selectedOrder.case_type) {
+      return items?.filter((item) => {
+        if (item.order_id === selectedOrder.order_id) {
+          return item.case_type === "New Order"; // Filter only items with case_type "New Order"
+        }
+        return true;
+      });
+    } else {
+      return items?.filter((item) => item.case_type === "New Order"); // Filter all items with case_type "New Order"
+    }
+  }, [items, selectedOrder]);
+   
+ 
   const handleUpdateClick = (order) => {
     setSelectedOrder(order);
     setSelectedOrderId(order?.order_id);
@@ -68,11 +101,27 @@ const MainAdmin = () => {
   };
 
   const handleSaveUpdate = (updatedData) => {
-    // Handle saving the updated data here
     console.log("Updated Data:", updatedData);
+    setItems((prevItems) =>
+      prevItems.map((item) => {
+        if (item.order_id === updatedData.order_id && item.case_type === updatedData.case_type) {
+          return { ...item, case_type: "" };
+        }
+        return item;
+      })
+    );
+    setSelectedOrder((prevSelectedOrder) =>
+      prevSelectedOrder && prevSelectedOrder.order_id === updatedData.order_id
+        ? { ...prevSelectedOrder, case_type: "" }
+        : prevSelectedOrder
+    );
     handleClosePopup();
   };
+  
 
+    
+  
+  
   return (
     <>
       <div className="right-side">
@@ -86,7 +135,7 @@ const MainAdmin = () => {
           dropdownIsVisible={dropdownIsVisible}
         />
         <Navlink viewState={viewState} changeViewState={changeViewState} />
-
+<br/>
         <div>
           <table
             className="user-table"
@@ -96,34 +145,30 @@ const MainAdmin = () => {
               overflowX: "scroll",
             }}
           >
-            <thead>
-              <tr>
-                <th style={{ width: "50px" }}>S.N</th>
-                <th>Order ID</th>
-                <th>Action</th>
-              </tr>
-            </thead>
+           
             <tbody className="tbody">
-              {itemsDetails?.map((item, i, array) => (
-                <tr key={Math.random()} style={{ height: "30px" }}>
-                  <td>{i + 1}</td>
-                  <td>{item?.order_id || ""}</td>
-                  <td>
-                    <button
-                      type="button"
-                      onClick={() => handleUpdateClick(item)}
-                      className="item-sales-search"
-                      style={{
-                        width: "fit-content",
-                        top: 0,
-                      }}
-                    >
-                      Update
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+  {itemsDetails?.map((item, i, array) => (
+    <tr key={Math.random()} style={{ height: "30px" }}>
+      <td>{item?.order_id || ""}</td>
+      <td>{item?.customer_name || ""}</td>
+      <td>{item?.mobile || ""}</td>
+      <td>
+        <button
+          type="button"
+          onClick={() => handleUpdateClick(item)}
+          className="item-sales-search"
+          style={{
+            width: "fit-content",
+            top: 0,
+          }}
+        >
+          Update
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
           </table>
         </div>
 
@@ -131,11 +176,11 @@ const MainAdmin = () => {
       </div>
       {updateForm && (
         <UpdatePopup
-          onSave={handleSaveUpdate}
-          selectedOrder={selectedOrder}
-          selectedOrderId={selectedOrderId}
-          onClose={handleClosePopup}
-        />
+        onSave={handleSaveUpdate}
+        selectedOrder={selectedOrder}
+        selectedOrderId={selectedOrderId}
+        onClose={handleClosePopup}
+      />
       )}
     </>
   );
