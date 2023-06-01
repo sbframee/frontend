@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import axios from "axios";
 import "./styles.css";
+import HeaderAdminM from "../../components/HeaderAdminM";
 
 const ChargesPage = () => {
   const [itemsData, setItemsData] = useState([]);
@@ -41,8 +40,7 @@ const ChargesPage = () => {
 
   return (
     <>
-      <Sidebar />
-      <Header />
+      <HeaderAdminM />
       <div className="item-sales-container orders-report-container">
         <div id="heading">
           <h2>Charges</h2>

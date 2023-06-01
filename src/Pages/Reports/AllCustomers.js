@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
+import HeaderAdminM from "../../components/HeaderAdminM";
 import { AddCircle as AddIcon } from "@mui/icons-material";
 import DatePicker from "react-datepicker";
 import EditIcon from '@mui/icons-material/Edit';
@@ -46,15 +45,10 @@ const AllCustomers = () => {
       items.filter(
         (a) =>
           !searchData.invoiceNumberFilter ||
-          a.customer_firstname
-            ?.toString()
-            ?.includes(searchData.invoiceNumberFilter.toLocaleLowerCase()) ||
-          a.customer_middlename
-            ?.toString()
-            ?.includes(searchData.invoiceNumberFilter.toLocaleLowerCase()) ||
-          a.customer_lastname
-            ?.toLocaleLowerCase()
-            ?.includes(searchData.invoiceNumberFilter.toLocaleLowerCase()) ||
+          a.customer_name
+          ?.toString()
+          ?.toLocaleLowerCase()
+          ?.includes(searchData?.invoiceNumberFilter.toLocaleLowerCase()) ||
           a.mobile.filter((b) =>
             b.number
               ?.toString()
@@ -69,9 +63,7 @@ const AllCustomers = () => {
     let sheetData = itemsDetails.map((a) => {
       // console.log(a)
       return {
-        "First Name": a.customer_firstname,
-        "Middle Name": a.customer_middlename,
-        "Last Name": a.customer_lastname,
+        "Name": a.customer_name,
         Gender: a.customer_gender,
         "Date of Birth": new Date(a.dob).toDateString(),
         Address: a.address,
@@ -100,9 +92,8 @@ const AllCustomers = () => {
   };
   return (
     <>
-      <Sidebar />
-      <Header />
-      <div className="item-sales-container orders-report-container">
+      <HeaderAdminM />
+      <div>
         <div id="heading">
           <h2>All Customers</h2>
         </div>
@@ -191,9 +182,7 @@ function Table({ itemsDetails, setPopup }) {
         <thead>
           <tr>
             <th style={{ width: "50px" }}>S.N</th>
-            <th>First Name</th>
-            <th>Middle Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
             <th>Gender</th>
             <th>Date of Birth</th>
             <th>Address</th>
@@ -205,9 +194,7 @@ function Table({ itemsDetails, setPopup }) {
           {itemsDetails?.map((item, i, array) => (
             <tr key={Math.random()} style={{ height: "30px" }}>
               <td>{i + 1}</td>
-              <td>{item.customer_firstname}</td>
-              <td>{item.customer_middlename}</td>
-              <td>{item.customer_lastname}</td>
+              <td>{item.customer_name}</td>
               <td>{item.customer_gender || ""}</td>
 
               <td>{new Date(item.dob).toDateString()}</td>
@@ -291,9 +278,7 @@ function Table({ itemsDetails, setPopup }) {
           <thead>
             <tr>
               <th>S.N</th>
-              <th>First Name</th>
-              <th>Middle Name</th>
-              <th>Last Name</th>
+              <th>Name</th>
               <th>Gender</th>
               <th>Date of Birth</th>
             </tr>
@@ -302,9 +287,7 @@ function Table({ itemsDetails, setPopup }) {
             {itemsDetails?.map((item, i, array) => (
               <tr key={Math.random()}>
                 <td>{i + 1}</td>
-                <td>{item.customer_firstname}</td>
-                <td>{item.customer_middlename}</td>
-                <td>{item.customer_lastname}</td>
+                <td>{item.customer_name}</td>
                 <td>{item.customer_gender || ""}</td>
 
                 <td>{new Date(item.dob).toDateString()}</td>

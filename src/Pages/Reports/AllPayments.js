@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
-import Header from "../../components/Header";
+import HeaderAdminM from "../../components/HeaderAdminM";
 import DatePicker from "react-datepicker";
-import Sidebar from "../../components/Sidebar";
 import * as FileSaver from "file-saver";
 
 import * as XLSX from "xlsx";
@@ -78,9 +77,8 @@ const AllPayments = () => {
   };
   return (
     <>
-      <Sidebar />
-      <Header />
-      <div className="item-sales-container orders-report-container">
+      <HeaderAdminM />
+      <div>
         <div id="heading">
           <h2>All Payments</h2>
         </div>
